@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/karee/AndroidStudioProjects/Gamestar/app/src/main/res/drawable/into_button_gradient.xml" value="0.1" />
         <entry key="..\:/Users/karee/AndroidStudioProjects/Gamestar/app/src/main/res/drawable/splash_fade.xml" value="0.1" />
         <entry key="..\:/Users/karee/AndroidStudioProjects/Gamestar/app/src/main/res/layout/activity_intro.xml" value="0.2777777777777778" />
+        <entry key="..\:/Users/karee/AndroidStudioProjects/Gamestar/app/src/main/res/layout/activity_main.xml" value="0.2777777777777778" />
         <entry key="..\:/Users/karee/AndroidStudioProjects/Gamestar/app/src/main/res/layout/activity_splash.xml" value="0.33" />
       </map>
     </option>
