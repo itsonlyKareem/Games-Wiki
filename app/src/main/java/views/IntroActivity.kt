@@ -1,5 +1,6 @@
 package views
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,13 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
         getViews()
+
+        // Get Started
+        getStarted.setOnClickListener {
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
     }

@@ -1,13 +1,17 @@
 package network.models
 
 class Game(
-    id: Int,
-    name: String,
-    image: String,
-    overallRating: Int,
-    playtime: Int,
-    lastUpdated: String,
-    ratings: List<Rating>,
-    platforms: List<Platform>
+    var id: Int,
+    var name: String,
+    var image: String,
+    var overallRating: Int,
+    var playtime: Int,
+    var lastUpdated: String,
+    var ratings: MutableList<Rating>,
+    var platforms: MutableList<Platform>,
+    var stores: MutableList<Store>,
+    var screenshots: MutableList<ScreenShot>,
+    var dominant_color: String
     ) {
+
 }

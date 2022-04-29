@@ -1,7 +1,7 @@
 package network.models
 
 class Platform(
-    name: String,
-    releaseDate: String
+    var name: String,
+    var releaseDate: String
 ) {
 }

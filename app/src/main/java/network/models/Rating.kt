@@ -1,8 +1,9 @@
 package network.models
 
 class Rating(
-    title: String,
-    percent: Double
+    var title: String,
+    var percent: Double,
+    var count: Int,
 ) {
 
 }

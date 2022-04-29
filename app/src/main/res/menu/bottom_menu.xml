@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/gamesFragment"
+        android:icon="@drawable/games"
+        android:iconTint="#FFFFFFFF"
+        android:title="Games" />
+
+    <item
+        android:id="@+id/platformsFragment"
+        android:icon="@drawable/platforms"
+        android:iconTint="#FFFFFFFF"
+        android:title="Platforms" />
+
+</menu>
