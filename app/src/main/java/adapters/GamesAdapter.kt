@@ -1,15 +1,26 @@
 package adapters
 
+import android.animation.ObjectAnimator
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.Scroller
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.omega.gamestar.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import network.models.Game
+import java.time.Duration
+import java.time.format.DateTimeFormatter
+import java.util.*
+import java.util.logging.Handler
 
 class GamesAdapter(private val gamesList: MutableList<Game>) :
     RecyclerView.Adapter<GamesAdapter.ViewHolder>() {
@@ -21,16 +32,15 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = gamesList[position]
-        var rating: MutableList<Double> = arrayListOf()
         var platforms: String = ""
         var totalPercentage = 0.0
         var totalCount = 0
         var average = 0.0
-        var countxPercentage = 0.0
 
         holder.image.load(game.image)
         holder.name.text = game.name
-        holder.date.text = game.lastUpdated
+        holder.date.text = game.lastUpdated.substring(0,10)
+
         game.platforms.forEach {
             platforms += it.name + "\n"
         }
@@ -40,13 +50,22 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
             totalPercentage += game.ratings[i].percent
 
         }
+
+
+
         println(totalCount)
         println(totalPercentage)
         average = totalCount/totalPercentage
         average = Math.round(average*10.0)/10.0
         holder.rating.text = average.toString() + "%"
 
-        holder.itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, android.R.anim.slide_in_left)
+
+        GlobalScope.launch {
+            holder.itemView.animation = AnimationUtils.makeInAnimation(holder.itemView.context, true)
+            holder.itemView.animation.duration = 2000
+            holder.itemView.animation.startNow()
+            delay(10L) }
+
     }
 
     override fun getItemCount(): Int {

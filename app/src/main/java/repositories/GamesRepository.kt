@@ -30,7 +30,6 @@ class GamesRepository(private val apiService: ApiService) {
     lateinit var platformObject: JSONObject
     lateinit var platformName: String
     lateinit var platformReleaseDate: String
-    var platformsList: MutableList<Platform> = arrayListOf()
     var gameStores: JSONArray = JSONArray()
     lateinit var store: JSONObject
     var storeId: Int = 0
@@ -58,6 +57,7 @@ class GamesRepository(private val apiService: ApiService) {
                     for (i in 0 until gamesResponse.length()) {
                         val gameObject = JSONObject(gamesResponse.getJSONObject(i).toString())
                         val ratingsListMini: MutableList<Rating> = arrayListOf()
+                        var platformsList: MutableList<Platform> = arrayListOf()
 
                         // ID
                         gameId = gameObject.getInt("id")
