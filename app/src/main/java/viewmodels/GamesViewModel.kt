@@ -8,10 +8,10 @@ import kotlinx.coroutines.launch
 import network.models.Game
 import repositories.GamesRepository
 
-class GamesViewModel(private val gamesRepository: GamesRepository): ViewModel() {
+class GamesViewModel(private val gamesRepository: GamesRepository, private val page: Int): ViewModel() {
     init {
         viewModelScope.launch (Dispatchers.IO) {
-            gamesRepository.getGames()
+            gamesRepository.getGames(page)
         }
     }
 

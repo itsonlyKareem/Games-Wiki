@@ -47,8 +47,9 @@ class GamesRepository(private val apiService: ApiService) {
 
     val games: LiveData<MutableList<Game>> = gamesLiveData
 
-    fun getGames() {
-        val result = apiService.fetchGames("7a22ee5b90074dea91bbf909c7a781a5")
+    fun getGames(page: Int) {
+        gamesList.clear()
+        val result = apiService.fetchGames("7a22ee5b90074dea91bbf909c7a781a5", page)
         result.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful && response.body() != null) {
@@ -122,19 +123,21 @@ class GamesRepository(private val apiService: ApiService) {
 
 
 
-                        gamesList.add(Game(
-                            id = gameId,
-                            name = gameName,
-                            image = gameImage,
-                            overallRating = gameRating,
-                            playtime = gamePlayTime,
-                            lastUpdated = gameLastUpdate,
-                            ratings = ratingsListMini,
-                            platforms = platformsList,
-                            stores = storesList,
-                            screenshots = screenShotsList,
-                            dominant_color = gameDominantColor
-                        ))
+                        gamesList.add(
+                            Game(
+                                id = gameId,
+                                name = gameName,
+                                image = gameImage,
+                                overallRating = gameRating,
+                                playtime = gamePlayTime,
+                                lastUpdated = gameLastUpdate,
+                                ratings = ratingsListMini,
+                                platforms = platformsList,
+                                stores = storesList,
+                                screenshots = screenShotsList,
+                                dominant_color = gameDominantColor
+                            )
+                        )
 
                     }
 
@@ -153,4 +156,5 @@ class GamesRepository(private val apiService: ApiService) {
 
 
     }
+
 }

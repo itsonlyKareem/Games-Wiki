@@ -5,12 +5,15 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiService {
     @GET("/games")
     fun fetchGames(
-        @Query("key")
-        page: String,
+       @Query("key") key: String,
+       @Query("page") page: Int,
+
+
 
         @Header("X-RapidAPI-Host")
         host: String = "rawg-video-games-database.p.rapidapi.com",

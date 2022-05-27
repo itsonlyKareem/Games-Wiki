@@ -51,10 +51,6 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
 
         }
 
-
-
-        println(totalCount)
-        println(totalPercentage)
         average = totalCount/totalPercentage
         average = Math.round(average*10.0)/10.0
         holder.rating.text = average.toString() + "%"

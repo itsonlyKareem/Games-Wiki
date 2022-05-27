@@ -1,27 +1,31 @@
 package fragments
 
 import adapters.GamesAdapter
+import android.animation.Animator
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
+import android.view.animation.Animation
+import android.view.animation.OvershootInterpolator
+import android.widget.Button
 import android.widget.ProgressBar
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.animation.AnimationUtils
 import com.omega.gamestar.R
+import jp.wasabeef.recyclerview.animators.LandingAnimator
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import network.ApiClient
 import network.ApiService
-import network.models.Game
 import repositories.GamesRepository
-import retrofit2.create
 import viewmodels.GamesViewModel
 import viewmodels.GamesViewModelFactory
-import java.util.*
 
 class GamesFragment : Fragment() {
 
@@ -29,6 +33,11 @@ class GamesFragment : Fragment() {
     lateinit var gamesCard: CardView
     lateinit var gamesRecycler: RecyclerView
     lateinit var gamesProgress: ProgressBar
+    lateinit var nextPage: Button
+    lateinit var previousPage: Button
+    lateinit var gamesRepository: GamesRepository
+    lateinit var adapter: GamesAdapter
+    var page: Int = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,21 +52,46 @@ class GamesFragment : Fragment() {
 
         // Receiving and modelling response
         val apiInterface = ApiClient.getInstance().create(ApiService::class.java)
-        val gamesRepository = GamesRepository(apiInterface)
-        val gamesViewModelFactory = GamesViewModelFactory(gamesRepository)
-        val gamesViewModel = ViewModelProvider(this,gamesViewModelFactory).get(GamesViewModel::class.java)
+        gamesRepository = GamesRepository(apiInterface)
+        var gamesViewModelFactory = GamesViewModelFactory(gamesRepository,page)
+        var gamesViewModel =
+            ViewModelProvider(this, gamesViewModelFactory)[GamesViewModel::class.java]
 
         // RecyclerView Settings
         gamesRecycler.setHasFixedSize(true)
         gamesRecycler.alpha = 0f
         gamesRecycler.layoutManager = LinearLayoutManager(this.context)
 
-        gamesViewModel.games.observe(viewLifecycleOwner) { it ->
+
+        // Next Page
+        nextPage.setOnClickListener {
+            page++
+            gamesRepository.getGames(page)
+            gamesRecycler.scrollToPosition(0)
+            gamesProgress.visibility = View.VISIBLE
+        }
+
+        // Previous Page
+        previousPage.setOnClickListener {
+            if (page == 1) {
+                it.isEnabled = false
+            } else {
+                page--
+                gamesRepository.getGames(page)
+                gamesRecycler.scrollToPosition(0)
+                gamesProgress.visibility = View.VISIBLE
+            }
+        }
+
+        gamesViewModel.games.observeForever { it ->
             gamesProgress.visibility = View.GONE
-            val adapter = GamesAdapter(it)
+            adapter = GamesAdapter(it)
+            adapter.notifyDataSetChanged()
             gamesRecycler.adapter = adapter
+            gamesRecycler.itemAnimator = LandingAnimator()
             gamesRecycler.animate().alphaBy(1f).setDuration(2000).start()
         }
+
 
         return v
     }
@@ -66,5 +100,7 @@ class GamesFragment : Fragment() {
         gamesCard = v!!.findViewById(R.id.gamesCard)
         gamesRecycler = v.findViewById(R.id.gamesRecycler)
         gamesProgress = v.findViewById(R.id.gamesProgress)
+        nextPage = v.findViewById(R.id.nextPageGames)
+        previousPage = v.findViewById(R.id.previousPageGames)
     }
 }
