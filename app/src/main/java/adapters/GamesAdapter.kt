@@ -1,28 +1,19 @@
 package adapters
 
-import android.animation.ObjectAnimator
-import android.os.Looper
-import android.text.method.ScrollingMovementMethod
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.Scroller
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.omega.gamestar.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import network.models.Game
-import java.time.Duration
-import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.logging.Handler
-import kotlin.concurrent.schedule
+
 
 class GamesAdapter(private val gamesList: MutableList<Game>) :
     RecyclerView.Adapter<GamesAdapter.ViewHolder>() {
@@ -34,7 +25,7 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = gamesList[position]
-        var platforms: String = ""
+        var platforms = ""
         var totalPercentage = 0.0
         var totalCount = 0
         var average = 0.0
@@ -57,7 +48,6 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
         average = Math.round(average*10.0)/10.0
         holder.rating.text = average.toString() + "%"
 
-        var handler: android.os.Handler = android.os.Handler(Looper.getMainLooper())
         holder.itemView.alpha = 0f
         holder.itemView.translationX = -200f
         GlobalScope.launch (Dispatchers.Main){
@@ -68,6 +58,9 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
                 interpolator = interpolator
             }.start()
         }
+
+        holder.itemView.setBackgroundColor(Color.parseColor("#"+game.dominant_color))
+        println(game.dominant_color)
     }
 
     override fun getItemCount(): Int {

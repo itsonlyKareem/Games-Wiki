@@ -96,18 +96,24 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginBottom="10dp"
                                 android:backgroundTint="#FFFFFF"
+                                android:elevation="20dp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
                                 android:text="Previous"
                                 android:textColor="#FF1D1D1D"
                                 app:cornerRadius="20dp"
                                 app:icon="@drawable/previous"
-                                app:iconTint="#FF1D1D1D" />
+                                app:iconTint="#FF1D1D1D"
+                                app:rippleColor="#FF1D1D1D" />
 
-                            <Space
+                            <TextView
+                                android:id="@+id/gamesPageNum"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                android:layout_weight="1"
+                                android:text="TextView"
+                                android:textAlignment="center"
+                                android:textColor="#FFFFFF" />
 
                             <Button
                                 android:id="@+id/nextPageGames"
@@ -116,6 +122,7 @@
                                 android:layout_marginRight="20dp"
                                 android:layout_marginBottom="10dp"
                                 android:backgroundTint="#FFFFFF"
+                                android:elevation="20dp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
                                 android:text="Next"
@@ -123,7 +130,8 @@
                                 app:cornerRadius="20dp"
                                 app:icon="@drawable/next"
                                 app:iconGravity="end"
-                                app:iconTint="#FF1D1D1D" />
+                                app:iconTint="#FF1D1D1D"
+                                app:rippleColor="#FF1D1D1D" />
                         </LinearLayout>
 
                     </LinearLayout>

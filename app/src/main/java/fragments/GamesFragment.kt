@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +38,7 @@ class GamesFragment : Fragment() {
     lateinit var previousPage: Button
     lateinit var gamesRepository: GamesRepository
     lateinit var adapter: GamesAdapter
+    lateinit var pageNumber: TextView
     var page: Int = 1
 
     override fun onCreateView(
@@ -62,10 +64,13 @@ class GamesFragment : Fragment() {
         gamesRecycler.alpha = 0f
         gamesRecycler.layoutManager = LinearLayoutManager(this.context)
 
+        // Page Number
+        pageNumber.text = "Page $page"
 
         // Next Page
         nextPage.setOnClickListener {
             page++
+            pageNumber.text = "Page $page"
             gamesRepository.getGames(page)
             gamesRecycler.scrollToPosition(0)
             gamesProgress.visibility = View.VISIBLE
@@ -74,9 +79,11 @@ class GamesFragment : Fragment() {
         // Previous Page
         previousPage.setOnClickListener {
             if (page == 1) {
-                it.isEnabled = false
+
             } else {
+                it.isEnabled = true
                 page--
+                pageNumber.text = "Page $page"
                 gamesRepository.getGames(page)
                 gamesRecycler.scrollToPosition(0)
                 gamesProgress.visibility = View.VISIBLE
@@ -101,5 +108,6 @@ class GamesFragment : Fragment() {
         gamesProgress = v.findViewById(R.id.gamesProgress)
         nextPage = v.findViewById(R.id.nextPageGames)
         previousPage = v.findViewById(R.id.previousPageGames)
+        pageNumber = v.findViewById(R.id.gamesPageNum)
     }
 }
