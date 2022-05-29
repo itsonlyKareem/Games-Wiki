@@ -1,6 +1,7 @@
 package adapters
 
 import android.animation.ObjectAnimator
+import android.os.Looper
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import java.time.Duration
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Handler
+import kotlin.concurrent.schedule
 
 class GamesAdapter(private val gamesList: MutableList<Game>) :
     RecyclerView.Adapter<GamesAdapter.ViewHolder>() {
@@ -55,13 +57,17 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
         average = Math.round(average*10.0)/10.0
         holder.rating.text = average.toString() + "%"
 
-
-        GlobalScope.launch {
-            holder.itemView.animation = AnimationUtils.makeInAnimation(holder.itemView.context, true)
-            holder.itemView.animation.duration = 2000
-            holder.itemView.animation.startNow()
-            delay(10L) }
-
+        var handler: android.os.Handler = android.os.Handler(Looper.getMainLooper())
+        holder.itemView.alpha = 0f
+        holder.itemView.translationX = -200f
+        GlobalScope.launch (Dispatchers.Main){
+            holder.itemView.animate().apply {
+                translationXBy(200f)
+                alpha(1f)
+                duration = 600
+                interpolator = interpolator
+            }.start()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -69,11 +75,11 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name = itemView.findViewById<TextView>(R.id.gameList_name)
-        val date = itemView.findViewById<TextView>(R.id.gameList_date)
-        val image = itemView.findViewById<ImageView>(R.id.gameList_image)
-        val platforms = itemView.findViewById<TextView>(R.id.gamesList_platforms)
-        val rating = itemView.findViewById<TextView>(R.id.gamesList_rating)
+        val name: TextView = itemView.findViewById<TextView>(R.id.gameList_name)
+        val date: TextView = itemView.findViewById<TextView>(R.id.gameList_date)
+        val image: ImageView = itemView.findViewById<ImageView>(R.id.gameList_image)
+        val platforms: TextView = itemView.findViewById<TextView>(R.id.gamesList_platforms)
+        val rating: TextView = itemView.findViewById<TextView>(R.id.gamesList_rating)
     }
 
 }

@@ -86,9 +86,8 @@ class GamesFragment : Fragment() {
         gamesViewModel.games.observeForever { it ->
             gamesProgress.visibility = View.GONE
             adapter = GamesAdapter(it)
-            adapter.notifyDataSetChanged()
             gamesRecycler.adapter = adapter
-            gamesRecycler.itemAnimator = LandingAnimator()
+            gamesRecycler.itemAnimator = SlideInLeftAnimator(OvershootInterpolator(2.5f))
             gamesRecycler.animate().alphaBy(1f).setDuration(2000).start()
         }
 
