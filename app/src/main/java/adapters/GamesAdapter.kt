@@ -63,7 +63,7 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
                 interpolator = interpolator
             }.start()
             delay(1000)
-        }.start()
+        }
 
         GlobalScope.launch {
             val bitmap: Bitmap = Picasso.get().load(game.image).get()
