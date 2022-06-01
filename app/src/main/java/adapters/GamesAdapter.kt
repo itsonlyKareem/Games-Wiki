@@ -1,16 +1,21 @@
 package adapters
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
+import coil.Coil
 import coil.load
 import com.omega.gamestar.R
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import network.models.Game
 
@@ -57,10 +62,17 @@ class GamesAdapter(private val gamesList: MutableList<Game>) :
                 duration = 600
                 interpolator = interpolator
             }.start()
-        }
+            delay(1000)
+        }.start()
 
-        holder.itemView.setBackgroundColor(Color.parseColor("#"+game.dominant_color))
-        println(game.dominant_color)
+        GlobalScope.launch {
+            val bitmap: Bitmap = Picasso.get().load(game.image).get()
+            Palette.from(bitmap).generate {
+                if (it != null) {
+                    holder.itemView.setBackgroundColor(it.getDominantColor(0x00FFFFFF))
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
